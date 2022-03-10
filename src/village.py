@@ -3,7 +3,7 @@ import numpy as np
 class village:
     def __init__(self):
         self.n = 100
-        self.m = 50
+        self.m = 40
         self.vill_index = np.zeros((self.m,self.n), dtype=int)
         self.vill = np.empty((self.m,self.n), dtype=str)
         
