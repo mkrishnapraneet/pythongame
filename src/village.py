@@ -4,7 +4,7 @@ class village:
     def __init__(self):
         self.n = 100
         self.m = 40
-        self.vill_index = np.zeros((self.m,self.n), dtype=int)
+        self.vill_index = np.empty((self.m,self.n), dtype=object)
         self.vill = np.empty((self.m,self.n), dtype=str)
         
         for i in range(self.n):
@@ -28,5 +28,12 @@ class village:
                 print(self.vill[i][j], end="")
             print()
     
+    def buildings(self, town_hall, hut_array, cannon_array, wall_array):
+        self.town_hall = [town_hall]
+        self.hut_array = hut_array
+        self.cannon_array = cannon_array
+        self.wall_array = wall_array
+
+        self.building_array = [self.town_hall,self.hut_array,self.cannon_array,self.wall_array]
     
     

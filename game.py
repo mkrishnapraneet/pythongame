@@ -16,60 +16,70 @@ my_village = village()
 # my_village.vill = my_buildings.add_buildings(my_village.vill)
 twnhall = town_hall()
 
-hut1 = hut((5,7,10,12))
-hut2 = hut((32,34,10,12))
-hut3 = hut((5,7,85,87))
-hut4 = hut((32,34,85,87))
-hut5 = hut((32,34,49,51))
+hut1 = hut((5,7,10,12),"h1")
+hut2 = hut((32,34,10,12),"h2")
+hut3 = hut((5,7,85,87),"h3")
+hut4 = hut((32,34,85,87),"h4")
+hut5 = hut((32,34,49,51),"h5")
 
-cannon1 = cannon((9,12,21,23))
-cannon2 = cannon((9,12,76,78))
+cannon1 = cannon((9,12,21,23),"c1")
+cannon2 = cannon((9,12,76,78),"c2")
 
-wall1 = wall((21,22,40,41))
-wall2 = wall((22,23,41,42))
-wall3 = wall((23,24,42,43))
-wall4 = wall((20,21,39,40))
+wall1 = wall((21,22,40,41),"w1")
+wall2 = wall((22,23,41,42),"w2")
+wall3 = wall((23,24,42,43),"w3")
+wall4 = wall((20,21,39,40),"w4")
 
-wall5 = wall((21,22,59,60))
-wall6 = wall((22,23,58,59))
-wall7 = wall((23,24,57,58))
-wall8 = wall((20,21,60,61))
+wall5 = wall((21,22,59,60),"w5")
+wall6 = wall((22,23,58,59),"w6")
+wall7 = wall((23,24,57,58),"w7")
+wall8 = wall((20,21,60,61),"w8")
 
-wall9 = wall((15,16,47,48))
-wall10 = wall((15,16,48,49))
-wall11 = wall((15,16,49,50))
-wall12 = wall((15,16,50,51))
-wall13 = wall((15,16,51,52))
-wall14 = wall((15,16,52,53))
+wall9 = wall((15,16,47,48),"w9")
+wall10 = wall((15,16,48,49),"w10")
+wall11 = wall((15,16,49,50),"w11")
+wall12 = wall((15,16,50,51),"w12")
+wall13 = wall((15,16,51,52),"w13")
+wall14 = wall((15,16,52,53),"w14")
 
 
-my_village.vill = twnhall.add_town_hall(my_village.vill)
+my_village.vill,my_village.vill_index = twnhall.add_town_hall(my_village.vill,my_village.vill_index)
 
-my_village.vill = hut1.add_hut(my_village.vill)
-my_village.vill = hut2.add_hut(my_village.vill)
-my_village.vill = hut3.add_hut(my_village.vill)
-my_village.vill = hut4.add_hut(my_village.vill)
-my_village.vill = hut5.add_hut(my_village.vill)
+my_village.vill,my_village.vill_index = hut1.add_hut(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = hut2.add_hut(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = hut3.add_hut(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = hut4.add_hut(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = hut5.add_hut(my_village.vill,my_village.vill_index)
 
-my_village.vill = cannon1.add_cannon(my_village.vill)
-my_village.vill = cannon2.add_cannon(my_village.vill)
+my_village.vill,my_village.vill_index = cannon1.add_cannon(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = cannon2.add_cannon(my_village.vill,my_village.vill_index)
 
-my_village.vill = wall1.add_wall(my_village.vill)
-my_village.vill = wall2.add_wall(my_village.vill)
-my_village.vill = wall3.add_wall(my_village.vill)
-my_village.vill = wall4.add_wall(my_village.vill)
+my_village.vill,my_village.vill_index = wall1.add_wall(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = wall2.add_wall(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = wall3.add_wall(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = wall4.add_wall(my_village.vill,my_village.vill_index)
 
-my_village.vill = wall5.add_wall(my_village.vill)
-my_village.vill = wall6.add_wall(my_village.vill)
-my_village.vill = wall7.add_wall(my_village.vill)
-my_village.vill = wall8.add_wall(my_village.vill)
+my_village.vill,my_village.vill_index = wall5.add_wall(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = wall6.add_wall(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = wall7.add_wall(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = wall8.add_wall(my_village.vill,my_village.vill_index)
 
-my_village.vill = wall9.add_wall(my_village.vill)
-my_village.vill = wall10.add_wall(my_village.vill)
-my_village.vill = wall11.add_wall(my_village.vill)
-my_village.vill = wall12.add_wall(my_village.vill)
-my_village.vill = wall13.add_wall(my_village.vill)
-my_village.vill = wall14.add_wall(my_village.vill)
+my_village.vill,my_village.vill_index = wall9.add_wall(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = wall10.add_wall(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = wall11.add_wall(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = wall12.add_wall(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = wall13.add_wall(my_village.vill,my_village.vill_index)
+my_village.vill,my_village.vill_index = wall14.add_wall(my_village.vill,my_village.vill_index)
+
+hut_array = [hut1, hut2, hut3, hut4, hut5]
+cannon_array = [cannon1, cannon2]
+wall_array = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11, wall12, wall13, wall14]
+
+# my_village.hut_array = hut_array
+# my_village.cannon_array = cannon_array
+# my_village.wall_array = wall_array
+
+my_village.buildings(twnhall, hut_array, cannon_array, wall_array)
 
 my_king = king(my_village.vill)
 king_deployed = 0
@@ -77,13 +87,16 @@ king_deployed = 0
 while (1):
     inp = input_to(Get())
     os.system('cls' if os.name == 'nt' else 'clear')    
-    if (inp == "1" or inp == "2" or inp == "3"):
+    if (inp == "w" or inp == "a" or inp == "s" or inp == "d"):
+        if (king_deployed == 1):
+            my_king.move(my_village.vill, inp)
+    elif (inp == " "):
+        if king_deployed == 1:
+            my_village.vill, my_village.vill_index = my_king.attack(my_village.vill, my_village.vill_index, my_village)
+    elif (inp == "1" or inp == "2" or inp == "3"):
         if (king_deployed == 0):
             my_king.spawn(my_village.vill, inp)
             king_deployed = 1
-    elif (inp == "w" or inp == "a" or inp == "s" or inp == "d"):
-        if (king_deployed == 1):
-            my_king.move(my_village.vill, inp)
     elif (inp == 'q'):
         break
     my_village.display()
