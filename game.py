@@ -1,11 +1,15 @@
 
 import sys
+import os
+
+from time import sleep
 
 sys.path.insert(0, './src')
 
 from input import *
 from village import *
 from buildings import *
+from troops import *
 
 my_village = village()
 # my_buildings = buildings(100, "X", (18,21,48,52))
@@ -67,9 +71,22 @@ my_village.vill = wall12.add_wall(my_village.vill)
 my_village.vill = wall13.add_wall(my_village.vill)
 my_village.vill = wall14.add_wall(my_village.vill)
 
+king_deployed = 0
+# my_village.display()
+while (1):
+    inp = input_to(Get())
+    os.system('cls' if os.name == 'nt' else 'clear')    
+    if (inp == "1" or inp == "2" or inp == "3"):
+        if (king_deployed == 0):
+            my_king = king(my_village.vill,inp)
+            king_deployed = 1
+    elif (inp == 'q'):
+        break
+    my_village.display()
+    
+    sleep(0.1)
+    
 
-
-my_village.display()
 
 # print("Press any key to continue...")
 # while True:
