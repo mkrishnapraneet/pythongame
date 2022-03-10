@@ -16,17 +16,16 @@ class buildings:
 class town_hall(buildings):
 
     def __init__(self):
-        super().__init__(100, "T", (18, 21, 48, 52))
+        super().__init__(200, "T", (18, 21, 48, 52))
 
     def add_town_hall(self, village_matrix):
-        # self.b_display()
         village_matrix = self.add_buildings(village_matrix)
         return village_matrix
 
 
 class hut(buildings):
     def __init__(self, coordinates):
-        super().__init__(100, "H", coordinates)
+        super().__init__(30, "H", coordinates)
 
     def add_hut(self, village_matrix):
         village_matrix = self.add_buildings(village_matrix)
@@ -35,8 +34,16 @@ class hut(buildings):
 
 class cannon(buildings):
     def __init__(self, coordinates):
-        super().__init__(100, "C", coordinates)
+        super().__init__(150, "C", coordinates)
 
     def add_cannon(self, village_matrix):
+        village_matrix = self.add_buildings(village_matrix)
+        return village_matrix
+
+class wall(buildings):
+    def __init__(self, coordinates):
+        super().__init__(50, "W", coordinates)
+
+    def add_wall(self, village_matrix):
         village_matrix = self.add_buildings(village_matrix)
         return village_matrix
