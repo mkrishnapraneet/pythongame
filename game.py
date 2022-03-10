@@ -71,6 +71,7 @@ my_village.vill = wall12.add_wall(my_village.vill)
 my_village.vill = wall13.add_wall(my_village.vill)
 my_village.vill = wall14.add_wall(my_village.vill)
 
+my_king = king(my_village.vill)
 king_deployed = 0
 # my_village.display()
 while (1):
@@ -78,11 +79,15 @@ while (1):
     os.system('cls' if os.name == 'nt' else 'clear')    
     if (inp == "1" or inp == "2" or inp == "3"):
         if (king_deployed == 0):
-            my_king = king(my_village.vill,inp)
+            my_king.spawn(my_village.vill, inp)
             king_deployed = 1
+    elif (inp == "w" or inp == "a" or inp == "s" or inp == "d"):
+        if (king_deployed == 1):
+            my_king.move(my_village.vill, inp)
     elif (inp == 'q'):
         break
     my_village.display()
+    my_king.display_health()
     
     sleep(0.1)
     
