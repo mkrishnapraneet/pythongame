@@ -130,6 +130,40 @@ class king(troop):
             #     f.write("\n")
 
         return village_matrix, vill_index
+    def lev_attack(self, village_matrix, vill_index, my_village, my_buildings):
+        # code = []
+        required_buildings = []
+        for i in range(self.pos[0]-5, self.pos[0]+5):
+            for j in range(self.pos[1]-5, self.pos[1]+5):
+                if (village_matrix[i][j] == "H" or village_matrix[i][j] == "C" or village_matrix[i][j] == "W" or village_matrix[i][j] == "T" ):
+                    code = vill_index[i][j]
+                    # print(code)
+                    # with open("dum.txt", "a") as f:
+                    #     f.write(code)
+                    #     f.write("\n")
+
+                    
+
+                    for r in range(len(my_village.building_array)):
+                        for s in range(len(my_village.building_array[r])):
+                            # print(my_village.building_array[i][j])
+                            # with open("output.txt", "a") as f:
+                            #     f.write(str(my_village.building_array[i][j]))
+                            #     f.write("\n")
+                            if (my_village.building_array[r][s].code == code):
+                                required_building = my_village.building_array[r][s]
+                                required_buildings.append(required_building)
+                                break
+                else :
+                    continue            
+        required_buildings = set(required_buildings)
+        for i in required_buildings:
+            village_matrix, vill_index = i.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
+            # with open("output.txt", "a") as f:
+            #     f.write(required_building.code)
+            #     f.write("\n")
+
+        return village_matrix, vill_index
     
     def damage(self, damage, village_matrix, vill_index, my_troop, hp_matrix):
         village_matrix, vill_index = self.troop_damage(damage, village_matrix, vill_index, my_troop, hp_matrix)

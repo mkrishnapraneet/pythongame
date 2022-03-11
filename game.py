@@ -104,6 +104,9 @@ while (1):
     elif (inp == " "):
         if king_deployed == 1:
             my_village.vill, my_village.vill_index = my_king.attack(my_village.vill, my_village.vill_index, my_village, my_buildings)
+    elif (inp == "l"):
+        if king_deployed == 1:
+            my_village.vill, my_village.vill_index = my_king.lev_attack(my_village.vill, my_village.vill_index, my_village, my_buildings)
     elif (inp == "4" or inp == "5" or inp == "6"):
         my_barbarian = barbarian(my_village.vill)
         my_barbarian.spawn(my_village.vill, inp, my_village.hp_matrix)
