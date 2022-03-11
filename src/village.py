@@ -1,9 +1,11 @@
 import numpy as np
+from colorama import Fore, Back, Style
 
 class village:
     def __init__(self):
         self.n = 100
         self.m = 40
+        self.hp_matrix = np.zeros((self.m,self.n), dtype=float)
         self.vill_index = np.empty((self.m,self.n), dtype=object)
         self.vill = np.empty((self.m,self.n), dtype=str)
         
@@ -25,7 +27,13 @@ class village:
     def display(self):
         for i in range(self.m):
             for j in range(self.n):
-                print(self.vill[i][j], end="")
+                if (self.hp_matrix[i][j] >= 0.5):
+                    print(Fore.GREEN + self.vill[i][j] + Style.RESET_ALL, end="")
+                elif (self.hp_matrix[i][j] >= 0.25):
+                    print(Fore.YELLOW + self.vill[i][j] + Style.RESET_ALL, end="")
+                elif (self.hp_matrix[i][j] >= 0.0):
+                    print(Fore.RED + self.vill[i][j] + Style.RESET_ALL, end="")
+                # print(self.vill[i][j], end="")
             print()
     
     def buildings(self, town_hall, hut_array, cannon_array, wall_array):
