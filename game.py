@@ -127,6 +127,9 @@ while (1):
                     my_troop.troop_array[i][j].rage_spell(my_troop)
                     rage_spell = 1
     elif (inp == 'q'):
+        with open("output.txt", "a") as f:
+            f.write("END")
+            f.write("\n")
         break
     
     # my_barbarian.move(my_village.vill,my_village.vill_index, my_village)
@@ -153,9 +156,9 @@ while (1):
     elif a == 2:
         a = 0
 
-    # with open("output.txt", "a") as f:
-    #         f.write(str(inp))
-    #         f.write("\n")
+    with open("output.txt", "a") as f:
+            f.write(str(inp))
+            f.write("\n")
 
 
     sleep(0.2)

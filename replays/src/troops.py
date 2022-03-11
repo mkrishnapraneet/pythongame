@@ -13,9 +13,6 @@ def check_game_over(village_matrix):
     # return False
     os.system('cls' if os.name == 'nt' else 'clear')
     print("\nDefeat!\n")
-    with open("output.txt", "a") as f:
-            f.write("END")
-            f.write("\n")
     sys.exit()
 
 class troop:
