@@ -13,6 +13,7 @@ from troops import *
 
 my_village = village()
 my_troop = troop(20,5,"X",my_village.vill)
+my_buildings = buildings(10,"X", (0,0,0,0), "X")
 # my_buildings = buildings(100, "X", (18,21,48,52))
 # my_village.vill = my_buildings.add_buildings(my_village.vill)
 twnhall = town_hall()
@@ -22,6 +23,7 @@ hut2 = hut((32,34,10,12),"h2")
 hut3 = hut((5,7,85,87),"h3")
 hut4 = hut((32,34,85,87),"h4")
 hut5 = hut((32,34,49,51),"h5")
+# hut6 = hut((5,7,49,51),"h6")
 
 cannon1 = cannon((9,12,21,23),"c1")
 cannon2 = cannon((9,12,76,78),"c2")
@@ -44,33 +46,34 @@ wall13 = wall((15,16,51,52),"w13")
 wall14 = wall((15,16,52,53),"w14")
 
 
-my_village.vill,my_village.vill_index = twnhall.add_town_hall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
+my_village.vill,my_village.vill_index = twnhall.add_town_hall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
 
-my_village.vill,my_village.vill_index = hut1.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = hut2.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = hut3.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = hut4.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = hut5.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix)
+my_village.vill,my_village.vill_index = hut1.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+my_village.vill,my_village.vill_index = hut2.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+my_village.vill,my_village.vill_index = hut3.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+my_village.vill,my_village.vill_index = hut4.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+my_village.vill,my_village.vill_index = hut5.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+# my_village.vill,my_village.vill_index = hut6.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
 
-my_village.vill,my_village.vill_index = cannon1.add_cannon(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = cannon2.add_cannon(my_village.vill,my_village.vill_index, my_village.hp_matrix)
+my_village.vill,my_village.vill_index = cannon1.add_cannon(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+my_village.vill,my_village.vill_index = cannon2.add_cannon(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
 
-my_village.vill,my_village.vill_index = wall1.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = wall2.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = wall3.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = wall4.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
+my_village.vill,my_village.vill_index = wall1.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
+my_village.vill,my_village.vill_index = wall2.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
+my_village.vill,my_village.vill_index = wall3.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
+my_village.vill,my_village.vill_index = wall4.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
 
-my_village.vill,my_village.vill_index = wall5.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = wall6.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = wall7.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = wall8.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
+my_village.vill,my_village.vill_index = wall5.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
+my_village.vill,my_village.vill_index = wall6.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
+my_village.vill,my_village.vill_index = wall7.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
+my_village.vill,my_village.vill_index = wall8.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
 
-my_village.vill,my_village.vill_index = wall9.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = wall10.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = wall11.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = wall12.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = wall13.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
-my_village.vill,my_village.vill_index = wall14.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix)
+my_village.vill,my_village.vill_index = wall9.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
+my_village.vill,my_village.vill_index = wall10.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
+my_village.vill,my_village.vill_index = wall11.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
+my_village.vill,my_village.vill_index = wall12.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
+my_village.vill,my_village.vill_index = wall13.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
+my_village.vill,my_village.vill_index = wall14.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
 
 hut_array = [hut1, hut2, hut3, hut4, hut5]
 cannon_array = [cannon1, cannon2]
@@ -96,7 +99,7 @@ while (1):
             my_king.move(my_village.vill, inp, my_village.hp_matrix)
     elif (inp == " "):
         if king_deployed == 1:
-            my_village.vill, my_village.vill_index = my_king.attack(my_village.vill, my_village.vill_index, my_village)
+            my_village.vill, my_village.vill_index = my_king.attack(my_village.vill, my_village.vill_index, my_village, my_buildings)
     elif (inp == "4" or inp == "5" or inp == "6"):
         my_barbarian = barbarian(my_village.vill)
         my_barbarian.spawn(my_village.vill, inp, my_village.hp_matrix)
@@ -118,8 +121,8 @@ while (1):
     
     # my_barbarian.move(my_village.vill,my_village.vill_index, my_village)
     for i in range(len(barbarian_array)):
-        barbarian_array[i].move(my_village.vill,my_village.vill_index, my_village)
-        barbarian_array[i].attack(my_village.vill,my_village.vill_index, my_village)
+        barbarian_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings)
+        barbarian_array[i].attack(my_village.vill,my_village.vill_index, my_village, my_buildings)
     
     if a == 1:
         if my_village.vill[10][22] == "C":
@@ -136,6 +139,10 @@ while (1):
         a = 2
     elif a == 2:
         a = 0
+
+    # with open("output.txt", "a") as f:
+    #         f.write(str(inp))
+    #         f.write("\n")
 
 
     sleep(0.2)

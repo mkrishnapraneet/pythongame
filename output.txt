@@ -1,0 +1,1 @@
+[[<buildings.hut object at 0x7f4589226520>, <buildings.hut object at 0x7f4589226760>, <buildings.hut object at 0x7f4589226820>, <buildings.hut object at 0x7f4589226a00>], [<buildings.town_hall object at 0x7f4589226850>], [<buildings.cannon object at 0x7f4589226a30>, <buildings.cannon object at 0x7f4589226a60>]]
