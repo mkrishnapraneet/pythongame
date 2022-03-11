@@ -39,6 +39,11 @@ class troop:
                 my_troop.barbarian_array.remove(self)
             check_game_over(village_matrix)
         return village_matrix, vill_index
+    
+    def heal_spell(self,village_matrix, vill_index, my_troop, hp_matrix):
+        self.curr_hp = min((1.5)*(float(self.curr_hp)), self.max_hp)
+        hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+        return village_matrix, vill_index
 
 
 
@@ -90,7 +95,7 @@ class king(troop):
     def display_health(self):
         print("\nKing's Health: \n")
         # print(game.hut_array)
-        for i in range(self.curr_hp):
+        for i in range(int(self.curr_hp)):
             print("#", end="")
         print("\n")
     

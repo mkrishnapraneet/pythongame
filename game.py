@@ -109,6 +109,10 @@ while (1):
             my_king.spawn(my_village.vill, inp, my_village.hp_matrix)
             king_deployed = 1
             my_troop.array_troop(my_king, barbarian_array)
+    elif (inp == "h"):
+        for i in range(len(my_troop.troop_array)):
+            for j in range(len(my_troop.troop_array[i])):
+                my_troop.troop_array[i][j].heal_spell(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix)
     elif (inp == 'q'):
         break
     
