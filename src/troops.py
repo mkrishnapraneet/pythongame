@@ -44,6 +44,9 @@ class troop:
         self.curr_hp = min((1.5)*(float(self.curr_hp)), self.max_hp)
         hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
         return village_matrix, vill_index
+    
+    def rage_spell(self, my_troop):
+        self.damage = self.damage * 2
 
 
 

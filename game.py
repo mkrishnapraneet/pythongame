@@ -90,6 +90,7 @@ my_king = king(my_village.vill)
 barbarian_array = []
 king_deployed = 0
 a = 0
+rage_spell = 0
 # my_village.display()
 while (1):
     inp = input_to(Get())
@@ -97,6 +98,9 @@ while (1):
     if (inp == "w" or inp == "a" or inp == "s" or inp == "d"):
         if (king_deployed == 1):
             my_king.move(my_village.vill, inp, my_village.hp_matrix)
+            if rage_spell == 1:
+                my_king.move(my_village.vill, inp, my_village.hp_matrix)
+
     elif (inp == " "):
         if king_deployed == 1:
             my_village.vill, my_village.vill_index = my_king.attack(my_village.vill, my_village.vill_index, my_village, my_buildings)
@@ -116,6 +120,12 @@ while (1):
         for i in range(len(my_troop.troop_array)):
             for j in range(len(my_troop.troop_array[i])):
                 my_troop.troop_array[i][j].heal_spell(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix)
+    elif (inp == "r"):
+        if rage_spell == 0:
+            for i in range(len(my_troop.troop_array)):
+                for j in range(len(my_troop.troop_array[i])):
+                    my_troop.troop_array[i][j].rage_spell(my_troop)
+                    rage_spell = 1
     elif (inp == 'q'):
         break
     
@@ -123,6 +133,9 @@ while (1):
     for i in range(len(barbarian_array)):
         barbarian_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings)
         barbarian_array[i].attack(my_village.vill,my_village.vill_index, my_village, my_buildings)
+        if rage_spell == 1:
+            barbarian_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings)
+            barbarian_array[i].attack(my_village.vill,my_village.vill_index, my_village, my_buildings)
     
     if a == 1:
         if my_village.vill[10][22] == "C":
