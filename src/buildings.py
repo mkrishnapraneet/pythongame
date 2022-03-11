@@ -61,6 +61,7 @@ class hut(buildings):
 class cannon(buildings):
     def __init__(self, coordinates, code):
         super().__init__(150, "C", coordinates, code)
+        self.deal_damage = 5
 
     def add_cannon(self, village_matrix, vill_index):
         village_matrix, vill_index = self.add_buildings(
@@ -70,6 +71,22 @@ class cannon(buildings):
     def damage(self, damage, village_matrix, vill_index):
         village_matrix, vill_index = self.building_damage(damage, village_matrix, vill_index)
         return village_matrix, vill_index
+    
+    def attack(self, village_matrix, vill_index, my_troop):
+        enemy_pos = 0
+        for i in range(self.coordinates[0]-5, self.coordinates[1]+5):
+            for j in range(self.coordinates[2]-5, self.coordinates[3]+5):
+                if (village_matrix[i][j] == "B" or village_matrix[i][j] == "K"):
+                    enemy_pos = (i, j)
+                    break
+        if (enemy_pos != 0):
+            for i in range(len(my_troop.troop_array)):
+                for j in range(len(my_troop.troop_array[i])):
+                    if (my_troop.troop_array[i][j].pos == enemy_pos):
+                        (my_troop.troop_array[i][j]).troop_damage(self.deal_damage, village_matrix, vill_index)
+                        break
+        return village_matrix, vill_index
+
 
 class wall(buildings):
     def __init__(self, coordinates, code):

@@ -12,6 +12,7 @@ from buildings import *
 from troops import *
 
 my_village = village()
+my_troop = troop(20,5,"X",my_village.vill)
 # my_buildings = buildings(100, "X", (18,21,48,52))
 # my_village.vill = my_buildings.add_buildings(my_village.vill)
 twnhall = town_hall()
@@ -82,7 +83,10 @@ wall_array = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wal
 my_village.buildings(twnhall, hut_array, cannon_array, wall_array)
 
 my_king = king(my_village.vill)
+
+barbarian_array = []
 king_deployed = 0
+a = 0
 # my_village.display()
 while (1):
     inp = input_to(Get())
@@ -93,15 +97,40 @@ while (1):
     elif (inp == " "):
         if king_deployed == 1:
             my_village.vill, my_village.vill_index = my_king.attack(my_village.vill, my_village.vill_index, my_village)
+    elif (inp == "4" or inp == "5" or inp == "6"):
+        my_barbarian = barbarian(my_village.vill)
+        my_barbarian.spawn(my_village.vill, inp)
+        barbarian_array.append(my_barbarian)
+        # my_troop.barbarian_array.append(my_barbarian)
+        my_troop.array_troop(my_king, barbarian_array)
+
     elif (inp == "1" or inp == "2" or inp == "3"):
         if (king_deployed == 0):
             my_king.spawn(my_village.vill, inp)
             king_deployed = 1
+            my_troop.array_troop(my_king, barbarian_array)
     elif (inp == 'q'):
         break
+    
+    # my_barbarian.move(my_village.vill,my_village.vill_index, my_village)
+    for i in range(len(barbarian_array)):
+        barbarian_array[i].move(my_village.vill,my_village.vill_index, my_village)
+    
+    if a == 1:
+        cannon1.attack(my_village.vill, my_village.vill_index, my_troop)
+        cannon2.attack(my_village.vill, my_village.vill_index, my_troop)
+
     my_village.display()
     my_king.display_health()
     
+    if a == 0:
+        a = 1
+    elif a == 1:
+        a = 2
+    elif a == 2:
+        a = 0
+
+
     sleep(0.1)
     
 
