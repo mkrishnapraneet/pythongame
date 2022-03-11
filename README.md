@@ -7,6 +7,7 @@ simple clone of CoC
 - to spawn the king at the middle of the top of the village, press 3
 - use 'w' , 'a' , 's' , 'd' to move up, left, down or right respectively with the king
 - to attack with the king press SPACEBAR. the king attacks the tile directly above him only and deals damage
+- use leviathan axe by pressing 'l' for aoe damage over 5 tile radius
 - king's healthbar is displayed at the bottom
 - to spawn barbarians (B) (from the same places as the king), press 4 (bottom left) or 5 (bottom right) or 6 (top center)
 - barbarians automatically go to the nearest building and they can attack an adjacent building from any direction
