@@ -120,7 +120,7 @@ class cannon(buildings):
         enemy_pos = 0
         for i in range(self.coordinates[0]-5, self.coordinates[1]+5):
             for j in range(self.coordinates[2]-5, self.coordinates[3]+5):
-                if (village_matrix[i][j] == "B" or village_matrix[i][j] == "K"):
+                if (village_matrix[i][j] == "B" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K"):
                     enemy_pos = (i, j)
                     break
         if (enemy_pos != 0):

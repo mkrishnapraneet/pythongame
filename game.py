@@ -88,6 +88,7 @@ my_village.buildings(twnhall, hut_array, cannon_array, wall_array)
 my_king = king(my_village.vill)
 
 barbarian_array = []
+archer_array = []
 king_deployed = 0
 a = 0
 rage_spell = 0
@@ -112,13 +113,20 @@ while (1):
         my_barbarian.spawn(my_village.vill, inp, my_village.hp_matrix)
         barbarian_array.append(my_barbarian)
         # my_troop.barbarian_array.append(my_barbarian)
-        my_troop.array_troop(my_king, barbarian_array)
+        my_troop.array_troop(my_king, barbarian_array, archer_array)
+    
+    elif (inp == "7" or inp == "8" or inp == "9"):
+        my_archer = archer(my_village.vill)
+        my_archer.spawn(my_village.vill, inp, my_village.hp_matrix)
+        archer_array.append(my_archer)
+        # my_troop.barbarian_array.append(my_barbarian)
+        my_troop.array_troop(my_king, archer_array, archer_array)
 
     elif (inp == "1" or inp == "2" or inp == "3"):
         if (king_deployed == 0):
             my_king.spawn(my_village.vill, inp, my_village.hp_matrix)
             king_deployed = 1
-            my_troop.array_troop(my_king, barbarian_array)
+            my_troop.array_troop(my_king, barbarian_array, archer_array)
     elif (inp == "h"):
         for i in range(len(my_troop.troop_array)):
             for j in range(len(my_troop.troop_array[i])):
@@ -142,6 +150,15 @@ while (1):
         if rage_spell == 1:
             barbarian_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings)
             barbarian_array[i].attack(my_village.vill,my_village.vill_index, my_village, my_buildings)
+    
+    for i in range(len(archer_array)):
+        archer_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings)
+        archer_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings)
+        archer_array[i].attack(my_village.vill,my_village.vill_index, my_village, my_buildings)
+        if rage_spell == 1:
+            archer_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings)
+            archer_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings)
+            archer_array[i].attack(my_village.vill,my_village.vill_index, my_village, my_buildings)
     
     if a == 1:
         if my_village.vill[10][22] == "C":

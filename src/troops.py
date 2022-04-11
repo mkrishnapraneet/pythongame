@@ -8,7 +8,7 @@ from village import *
 def check_game_over(village_matrix):
     for i in range(len(village_matrix)):
         for j in range(len(village_matrix[i])):
-            if (village_matrix[i][j] == "B" or village_matrix[i][j] == "K"):
+            if (village_matrix[i][j] == "B" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K"):
                 return
     # return False
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -26,10 +26,11 @@ class troop:
         self.symbol = symbol
         self.pos = (0, 0)
     
-    def array_troop(self,king, barbarian_array):
+    def array_troop(self,king, barbarian_array, archer_array):
         self.king_array = [king]
         self.barbarian_array = barbarian_array
-        self.troop_array = [self.king_array, self.barbarian_array]
+        self.archer_array = archer_array
+        self.troop_array = [self.king_array, self.barbarian_array, self.archer_array]
 
     def troop_damage(self, damage, village_matrix, vill_index, my_troop, hp_matrix):
         self.curr_hp -= damage
@@ -40,6 +41,8 @@ class troop:
             hp_matrix[self.pos[0]][self.pos[1]] = 0
             if self.symbol == "B":
                 my_troop.barbarian_array.remove(self)
+            if self.symbol == "A":
+                my_troop.archer_array.remove(self)
             check_game_over(village_matrix)
         return village_matrix, vill_index
     
@@ -304,6 +307,153 @@ class barbarian(troop):
                     village_matrix[self.pos[0]][self.pos[1]] = " "
                     self.pos = (self.pos[0], self.pos[1] - 1)
                     village_matrix[self.pos[0]][self.pos[1]] = "B"
+                    my_village.hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+
+        # if (village_matrix[self.pos[0]-1][self.pos[1]] == " "):
+        #     village_matrix[self.pos[0]][self.pos[1]] = " "
+        #     self.pos = (self.pos[0]-1, self.pos[1])
+        #     village_matrix[self.pos[0]][self.pos[1]] = "B"
+        #     my_village.hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+    
+    def damage(self, damage, village_matrix, vill_index, my_troop, hp_matrix):
+        village_matrix, vill_index = self.troop_damage(damage, village_matrix, vill_index, my_troop, hp_matrix)
+        return village_matrix, vill_index
+
+class archer(troop):
+    def __init__(self, village_matrix):
+        super().__init__(10, 2.5, "A", village_matrix)
+    
+    def spawn(self, village_matrix, spawn_pos, hp_matrix):
+        if (int(spawn_pos) == 7):
+            self.pos = (38, 25)
+            if (village_matrix[self.pos[0]][self.pos[1]] == " "):
+                village_matrix[self.pos[0]][self.pos[1]] = "A"
+                hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+        elif (int(spawn_pos) == 8):
+            self.pos = (38, 80)
+            if (village_matrix[self.pos[0]][self.pos[1]] == " "):
+                village_matrix[self.pos[0]][self.pos[1]] = "A"
+                hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+        else:
+            self.pos = (1, 50)
+            if (village_matrix[self.pos[0]][self.pos[1]] == " "):
+                village_matrix[self.pos[0]][self.pos[1]] = "A"
+                hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+
+    def attack(self, village_matrix, vill_index, my_village, my_buildings):
+        if (village_matrix[self.pos[0]-1][self.pos[1]] == "H" or village_matrix[self.pos[0]-1][self.pos[1]] == "C" or village_matrix[self.pos[0]-1][self.pos[1]] == "W" or village_matrix[self.pos[0]-1][self.pos[1]] == "T" ):
+            code = vill_index[self.pos[0]-1][self.pos[1]]
+            # print(code)
+            # with open("output.txt", "a") as f:
+            #     f.write(code)
+            #     f.write("\n")
+
+            required_building = 0
+
+            for i in range(len(my_village.building_array)):
+                for j in range(len(my_village.building_array[i])):
+                    # print(my_village.building_array[i][j])
+                    # with open("output.txt", "a") as f:
+                    #     f.write(str(my_village.building_array[i][j]))
+                    #     f.write("\n")
+                    if (my_village.building_array[i][j].code == code):
+                        required_building = my_village.building_array[i][j]
+                        break
+            required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
+        elif (village_matrix[self.pos[0]+1][self.pos[1]] == "H" or village_matrix[self.pos[0]+1][self.pos[1]] == "C" or village_matrix[self.pos[0]+1][self.pos[1]] == "W" or village_matrix[self.pos[0]+1][self.pos[1]] == "T" ):
+            code = vill_index[self.pos[0]+1][self.pos[1]]
+            # print(code)
+            # with open("output.txt", "a") as f:
+            #     f.write(code)
+            #     f.write("\n")
+
+            required_building = 0
+
+            for i in range(len(my_village.building_array)):
+                for j in range(len(my_village.building_array[i])):
+                    # print(my_village.building_array[i][j])
+                    # with open("output.txt", "a") as f:
+                    #     f.write(str(my_village.building_array[i][j]))
+                    #     f.write("\n")
+                    if (my_village.building_array[i][j].code == code):
+                        required_building = my_village.building_array[i][j]
+                        break
+            required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
+        elif (village_matrix[self.pos[0]][self.pos[1]-1] == "H" or village_matrix[self.pos[0]][self.pos[1]-1] == "C" or village_matrix[self.pos[0]][self.pos[1]-1] == "W" or village_matrix[self.pos[0]][self.pos[1]-1] == "T" ):
+            code = vill_index[self.pos[0]][self.pos[1]-1]
+            # print(code)
+            # with open("output.txt", "a") as f:
+            #     f.write(code)
+            #     f.write("\n")
+
+            required_building = 0
+
+            for i in range(len(my_village.building_array)):
+                for j in range(len(my_village.building_array[i])):
+                    # print(my_village.building_array[i][j])
+                    # with open("output.txt", "a") as f:
+                    #     f.write(str(my_village.building_array[i][j]))
+                    #     f.write("\n")
+                    if (my_village.building_array[i][j].code == code):
+                        required_building = my_village.building_array[i][j]
+                        break
+            required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
+        elif (village_matrix[self.pos[0]][self.pos[1]+1] == "H" or village_matrix[self.pos[0]][self.pos[1]+1] == "C" or village_matrix[self.pos[0]][self.pos[1]+1] == "W" or village_matrix[self.pos[0]][self.pos[1]+1] == "T" ):
+            code = vill_index[self.pos[0]][self.pos[1]+1]
+            # print(code)
+            # with open("output.txt", "a") as f:
+            #     f.write(code)
+            #     f.write("\n")
+
+            required_building = 0
+
+            for i in range(len(my_village.building_array)):
+                for j in range(len(my_village.building_array[i])):
+                    # print(my_village.building_array[i][j])
+                    # with open("output.txt", "a") as f:
+                    #     f.write(str(my_village.building_array[i][j]))
+                    #     f.write("\n")
+                    if (my_village.building_array[i][j].code == code):
+                        required_building = my_village.building_array[i][j]
+                        break
+            required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
+            
+        # return village_matrix, vill_index        
+    def move(self, village_matrix, vill_index, my_village, my_buildings):
+        # one_delta = abs(self.pos[0] - my_buildings.imp_building_array[0][0].coordinates[0]) + abs(self.pos[1] - my_buildings.imp_building_array[0][0].coordinates[2])
+        # min_build = [my_buildings.imp_building_array[0][0] , one_delta]
+        one_delta = 50000
+        min_build = [0, one_delta]
+        for i in range(len(my_buildings.imp_building_array)):
+            for j in range(len(my_buildings.imp_building_array[i])):
+                delta = abs(self.pos[0] - my_buildings.imp_building_array[i][j].coordinates[0]) + abs(self.pos[1] - my_buildings.imp_building_array[i][j].coordinates[2])
+                if (delta < min_build[1]):
+                    min_build = [my_buildings.imp_building_array[i][j], delta]
+        if (abs(self.pos[0] - min_build[0].coordinates[0]) > abs(self.pos[1] - min_build[0].coordinates[2])):
+            if (self.pos[0] < min_build[0].coordinates[0]):
+                if (village_matrix[self.pos[0]+1][self.pos[1]] == " "):
+                    village_matrix[self.pos[0]][self.pos[1]] = " "
+                    self.pos = (self.pos[0] + 1, self.pos[1])
+                    village_matrix[self.pos[0]][self.pos[1]] = "A"
+                    my_village.hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+            else:
+                if (village_matrix[self.pos[0]-1][self.pos[1]] == " "):
+                    village_matrix[self.pos[0]][self.pos[1]] = " "
+                    self.pos = (self.pos[0] - 1, self.pos[1])
+                    village_matrix[self.pos[0]][self.pos[1]] = "A"
+                    my_village.hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+        else:
+            if (self.pos[1] < min_build[0].coordinates[2]):
+                if (village_matrix[self.pos[0]][self.pos[1]+1] == " "):
+                    village_matrix[self.pos[0]][self.pos[1]] = " "
+                    self.pos = (self.pos[0], self.pos[1] + 1)
+                    village_matrix[self.pos[0]][self.pos[1]] = "A"
+                    my_village.hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+            else:
+                if (village_matrix[self.pos[0]][self.pos[1]-1] == " "):
+                    village_matrix[self.pos[0]][self.pos[1]] = " "
+                    self.pos = (self.pos[0], self.pos[1] - 1)
+                    village_matrix[self.pos[0]][self.pos[1]] = "A"
                     my_village.hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
 
         # if (village_matrix[self.pos[0]-1][self.pos[1]] == " "):
