@@ -341,7 +341,8 @@ class archer(troop):
                 hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
 
     def attack(self, village_matrix, vill_index, my_village, my_buildings):
-        if (village_matrix[self.pos[0]-1][self.pos[1]] == "H" or village_matrix[self.pos[0]-1][self.pos[1]] == "C" or village_matrix[self.pos[0]-1][self.pos[1]] == "W" or village_matrix[self.pos[0]-1][self.pos[1]] == "T" ):
+
+        if (village_matrix[self.pos[0]-1][self.pos[1]] == "W"):
             code = vill_index[self.pos[0]-1][self.pos[1]]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -360,7 +361,7 @@ class archer(troop):
                         required_building = my_village.building_array[i][j]
                         break
             required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
-        elif (village_matrix[self.pos[0]+1][self.pos[1]] == "H" or village_matrix[self.pos[0]+1][self.pos[1]] == "C" or village_matrix[self.pos[0]+1][self.pos[1]] == "W" or village_matrix[self.pos[0]+1][self.pos[1]] == "T" ):
+        elif (village_matrix[self.pos[0]+1][self.pos[1]] == "W"):
             code = vill_index[self.pos[0]+1][self.pos[1]]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -379,7 +380,7 @@ class archer(troop):
                         required_building = my_village.building_array[i][j]
                         break
             required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
-        elif (village_matrix[self.pos[0]][self.pos[1]-1] == "H" or village_matrix[self.pos[0]][self.pos[1]-1] == "C" or village_matrix[self.pos[0]][self.pos[1]-1] == "W" or village_matrix[self.pos[0]][self.pos[1]-1] == "T" ):
+        elif (village_matrix[self.pos[0]][self.pos[1]-1] == "W"):
             code = vill_index[self.pos[0]][self.pos[1]-1]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -398,7 +399,7 @@ class archer(troop):
                         required_building = my_village.building_array[i][j]
                         break
             required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
-        elif (village_matrix[self.pos[0]][self.pos[1]+1] == "H" or village_matrix[self.pos[0]][self.pos[1]+1] == "C" or village_matrix[self.pos[0]][self.pos[1]+1] == "W" or village_matrix[self.pos[0]][self.pos[1]+1] == "T" ):
+        elif (village_matrix[self.pos[0]][self.pos[1]+1] == "W"):
             code = vill_index[self.pos[0]][self.pos[1]+1]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -417,6 +418,45 @@ class archer(troop):
                         required_building = my_village.building_array[i][j]
                         break
             required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
+        else:
+            enemy_pos = 0
+            for i in range(self.pos[0]-6, self.pos[0]+6):
+                for j in range(self.pos[1]-6, self.pos[1]+6):
+                    try: 
+                        if (village_matrix[i][j] == "T" or village_matrix[i][j] == "C" or village_matrix[i][j] == "H"):
+                            enemy_pos = (i, j)
+                            break
+                    except:
+                        # f = 0
+                        continue
+            
+            if (enemy_pos != 0):
+                if (enemy_pos[0] >= 0 and enemy_pos[1] >= 0 ):
+                    code = vill_index[enemy_pos[0]][enemy_pos[1]]
+                    # print(code)
+                    # with open("test.txt", "a") as f:
+                    #     f.write(code)
+                    #     f.write("\n")
+
+                    required_building = 0
+
+                    for i in range(len(my_village.building_array)):
+                        for j in range(len(my_village.building_array[i])):
+                            # print(my_village.building_array[i][j])
+                            # with open("output.txt", "a") as f:
+                            #     f.write(str(my_village.building_array[i][j]))
+                            #     f.write("\n")
+                            if (my_village.building_array[i][j].code == code):
+                                required_building = my_village.building_array[i][j]
+                                break
+                    required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
+                    # if (enemy_pos != 0):
+                    #     for i in range(len(my_troop.troop_array)):
+                    #         for j in range(len(my_troop.troop_array[i])):
+                    #             if (my_troop.troop_array[i][j].pos == enemy_pos):
+                    #                 (my_troop.troop_array[i][j]).troop_damage(self.deal_damage, village_matrix, vill_index, my_troop, hp_matrix)
+                    #                 break
+        return village_matrix, vill_index
             
         # return village_matrix, vill_index        
     def move(self, village_matrix, vill_index, my_village, my_buildings):

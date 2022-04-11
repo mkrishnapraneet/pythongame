@@ -102,7 +102,7 @@ class hut(buildings):
 class cannon(buildings):
     def __init__(self, coordinates, code):
         super().__init__(150, "C", coordinates, code)
-        self.deal_damage = 5
+        self.deal_damage = 0.1
 
     def add_cannon(self, village_matrix, vill_index, hp_matrix , my_buildings):
         village_matrix, vill_index = self.add_buildings(
