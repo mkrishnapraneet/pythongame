@@ -102,6 +102,7 @@ prev_in_balloon_path = []
 my_village.buildings(twnhall, hut_array, cannon_array, wizard_tower_array, wall_array)
 
 my_king = king(my_village.vill)
+my_queen = queen(my_village.vill)
 
 prev_one =  np.empty((my_village.m, my_village.n), dtype=str)
 
@@ -109,8 +110,31 @@ barbarian_array = []
 archer_array = []
 balloon_array = []
 king_deployed = 0
+queen_deployed = 0
 a = 0
 rage_spell = 0
+last_moved = "w"
+
+timer = 0
+
+barbarian_spawn_count = 0
+archer_spawn_count = 0
+balloon_spawn_count = 0
+should_eagle = 0
+setofftimer = -1
+
+# def check_game_over(village_matrix):
+#     for i in range(len(village_matrix)):
+#         for j in range(len(village_matrix[i])):
+#             if (village_matrix[i][j] == "T" or village_matrix[i][j] == "V" or village_matrix[i][j] == "C" or village_matrix[i][j] == "H"):
+#                 return
+#     # return True
+#     os.system('cls' if os.name == 'nt' else 'clear')
+#     print("\nVictory!\n")
+#     with open("output.txt", "a") as f:
+#             f.write("END")
+#             f.write("\n")
+#     sys.exit()
 # my_village.display()
 while (1):
     inp = input_to(Get())
@@ -118,48 +142,73 @@ while (1):
     if (inp == "w" or inp == "a" or inp == "s" or inp == "d"):
         if (king_deployed == 1):
             my_king.move(my_village.vill, inp, my_village.hp_matrix)
+            last_moved = inp
             if rage_spell == 1:
                 my_king.move(my_village.vill, inp, my_village.hp_matrix)
+        elif (queen_deployed == 1):
+            my_queen.move(my_village.vill, inp, my_village.hp_matrix)
+            last_moved = inp
 
     elif (inp == " "):
         if king_deployed == 1:
-            my_village.vill, my_village.vill_index = my_king.attack(my_village.vill, my_village.vill_index, my_village, my_buildings)
+            my_village.vill, my_village.vill_index = my_king.attack(my_village.vill, my_village.vill_index, my_village, my_buildings, last_moved)
+        if queen_deployed == 1:
+            my_village.vill, my_village.vill_index = my_queen.attack(my_village.vill, my_village.vill_index, my_village, my_buildings, last_moved)
     elif (inp == "l"):
         if king_deployed == 1:
             my_village.vill, my_village.vill_index = my_king.lev_attack(my_village.vill, my_village.vill_index, my_village, my_buildings)
+    elif (inp == "e"):
+        if queen_deployed == 1:
+            should_eagle = 1
+            setofftimer = timer
+
+        # my_village.vill, my_village.vill_index = my_queen.eagle_attack(my_village.vill, my_village.vill_index, my_village, my_buildings, last_moved)
+
     elif (inp == "4" or inp == "5" or inp == "6"):
-        my_barbarian = barbarian(my_village.vill)
-        my_barbarian.spawn(my_village.vill, inp, my_village.hp_matrix)
-        barbarian_array.append(my_barbarian)
-        # my_troop.barbarian_array.append(my_barbarian)
-        my_troop.array_troop(my_king, barbarian_array, archer_array, balloon_array)
+        if (barbarian_spawn_count <= 5):                
+            my_barbarian = barbarian(my_village.vill)
+            my_barbarian.spawn(my_village.vill, inp, my_village.hp_matrix)
+            barbarian_array.append(my_barbarian)
+            # my_troop.barbarian_array.append(my_barbarian)
+            my_troop.array_troop(my_king, my_queen , barbarian_array, archer_array, balloon_array)
+            barbarian_spawn_count += 1
     
     elif (inp == "7" or inp == "8" or inp == "9"):
-        my_archer = archer(my_village.vill)
-        my_archer.spawn(my_village.vill, inp, my_village.hp_matrix)
-        archer_array.append(my_archer)
-        # my_troop.barbarian_array.append(my_barbarian)
-        my_troop.array_troop(my_king, archer_array, archer_array, balloon_array)
+        if (archer_spawn_count <= 5): 
+            my_archer = archer(my_village.vill)
+            my_archer.spawn(my_village.vill, inp, my_village.hp_matrix)
+            archer_array.append(my_archer)
+            # my_troop.barbarian_array.append(my_barbarian)
+            my_troop.array_troop(my_king, my_queen ,archer_array, archer_array, balloon_array)
+            archer_spawn_count += 1
     
     elif (inp == "0" or inp == "-" or inp == "="):
-        my_balloon = balloon(my_village.vill)
-        my_balloon.spawn(my_village.vill, inp, my_village.hp_matrix, my_village.air_space)
-        balloon_array.append(my_balloon)
-        prev_in_balloon_path.append(" ")
-        # my_troop.barbarian_array.append(my_barbarian)
-        my_troop.array_troop(my_king, archer_array, archer_array, balloon_array)
+        if (balloon_spawn_count <= 3): 
+            my_balloon = balloon(my_village.vill)
+            my_balloon.spawn(my_village.vill, inp, my_village.hp_matrix, my_village.air_space)
+            balloon_array.append(my_balloon)
+            prev_in_balloon_path.append(" ")
+            # my_troop.barbarian_array.append(my_barbarian)
+            my_troop.array_troop(my_king,my_queen ,archer_array, archer_array, balloon_array)
+            balloon_spawn_count += 1
 
     elif (inp == "1" or inp == "2" or inp == "3"):
-        if (king_deployed == 0):
+        if (king_deployed == 0 and queen_deployed == 0):
             my_king.spawn(my_village.vill, inp, my_village.hp_matrix)
             king_deployed = 1
-            my_troop.array_troop(my_king, barbarian_array, archer_array, balloon_array)
+            my_troop.array_troop(my_king, my_queen, barbarian_array, archer_array, balloon_array)
+    elif (inp == "b" or inp == "n" or inp == "m"):
+        if (king_deployed == 0 and queen_deployed == 0):
+            my_queen.spawn(my_village.vill, inp, my_village.hp_matrix)
+            queen_deployed = 1
+            my_troop.array_troop(my_king, my_queen ,barbarian_array, archer_array, balloon_array)
     elif (inp == "h"):
-        for i in range(len(my_troop.troop_array)):
-            for j in range(len(my_troop.troop_array[i])):
-                my_troop.troop_array[i][j].heal_spell(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix)
+        if (king_deployed == 1):
+            for i in range(len(my_troop.troop_array)):
+                for j in range(len(my_troop.troop_array[i])):
+                    my_troop.troop_array[i][j].heal_spell(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix)
     elif (inp == "r"):
-        if rage_spell == 0:
+        if (rage_spell == 0 and king_deployed == 1):
             for i in range(len(my_troop.troop_array)):
                 for j in range(len(my_troop.troop_array[i])):
                     my_troop.troop_array[i][j].rage_spell(my_troop)
@@ -206,6 +255,17 @@ while (1):
         if my_village.vill[26][77] == "V":
             wizard_tower2.attack(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix, my_village.air_space)
 
+    # my_village.buildings(twnhall, hut_array, cannon_array, wizard_tower_array, wall_array)
+    if timer == 8:
+        timer = 0
+    else :
+        timer += 1
+    
+    if (should_eagle == 1 and timer == setofftimer):
+        my_village.vill, my_village.vill_index = my_queen.eagle_attack(my_village.vill, my_village.vill_index, my_village, my_buildings, last_moved)
+        should_eagle = 0
+        setofftimer = -1
+    
     for i in range(len(my_village.vill)):
         for j in range(len(my_village.vill[i])):
             if my_village.air_space[i][j] == "O":
@@ -214,7 +274,10 @@ while (1):
 
     my_village.display()
 
-    my_king.display_health()
+    if king_deployed == 1:
+        my_king.display_health()
+    elif queen_deployed == 1:
+        my_queen.display_health()
     
     for i in range(len(my_village.vill)):
         for j in range(len(my_village.vill[i])):
@@ -227,6 +290,8 @@ while (1):
         a = 2
     elif a == 2:
         a = 0
+    
+    
 
     with open("output.txt", "a") as f:
             f.write(str(inp))

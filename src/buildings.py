@@ -1,6 +1,9 @@
 import sys
 import os
 
+# sys.path.insert(0, '../')
+# from game import check_game_over
+
 def check_game_over(village_matrix):
     for i in range(len(village_matrix)):
         for j in range(len(village_matrix[i])):
@@ -104,7 +107,7 @@ class hut(buildings):
 class cannon(buildings):
     def __init__(self, coordinates, code):
         super().__init__(150, "C", coordinates, code)
-        self.deal_damage = 0.1
+        self.deal_damage = 5
 
     def add_cannon(self, village_matrix, vill_index, hp_matrix , my_buildings):
         village_matrix, vill_index = self.add_buildings(
@@ -122,7 +125,7 @@ class cannon(buildings):
         enemy_pos = 0
         for i in range(self.coordinates[0]-5, self.coordinates[1]+5):
             for j in range(self.coordinates[2]-5, self.coordinates[3]+5):
-                if (village_matrix[i][j] == "B" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K"):
+                if (village_matrix[i][j] == "B" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K" or village_matrix[i][j] == "Q"):
                     enemy_pos = (i, j)
                     break
         if (enemy_pos != 0):
@@ -154,15 +157,19 @@ class wizard_tower(buildings):
         enemy_pos = 0
         for i in range(self.coordinates[0]-5, self.coordinates[1]+5):
             for j in range(self.coordinates[2]-5, self.coordinates[3]+5):
-                if (village_matrix[i][j] == "B" or air_space[i][j] == "O" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K"):
+                if (village_matrix[i][j] == "B" or air_space[i][j] == "O" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K" or village_matrix[i][j] == "Q"):
                     enemy_pos = (i, j)
                     break
         if (enemy_pos != 0):
-            for i in range(len(my_troop.troop_array)):
-                for j in range(len(my_troop.troop_array[i])):
-                    if (my_troop.troop_array[i][j].pos == enemy_pos):
-                        (my_troop.troop_array[i][j]).troop_damage(self.deal_damage, village_matrix, vill_index, my_troop, hp_matrix, air_space)
-                        break
+            for g in range(enemy_pos[0]-2, enemy_pos[0]+2):
+                for h in range(enemy_pos[1]-2, enemy_pos[1]+2):
+                    current_pos = (g,h)
+                    if (village_matrix[g][h] == "B" or air_space[g][h] == "O" or village_matrix[g][h] == "A" or village_matrix[g][h] == "K" or village_matrix[g][h] == "Q"): 
+                        for i in range(len(my_troop.troop_array)):
+                            for j in range(len(my_troop.troop_array[i])):
+                                if (my_troop.troop_array[i][j].pos == current_pos):
+                                    (my_troop.troop_array[i][j]).troop_damage(self.deal_damage, village_matrix, vill_index, my_troop, hp_matrix, air_space)
+                                    break
         return village_matrix, vill_index
 
 

@@ -26,13 +26,14 @@ class troop:
         self.symbol = symbol
         self.pos = (0, 0)
     
-    def array_troop(self,king, barbarian_array, archer_array, balloon_array):
+    def array_troop(self,king, queen, barbarian_array, archer_array, balloon_array):
         self.king_array = [king]
+        self.queen_array = [queen]
         self.barbarian_array = barbarian_array
         self.archer_array = archer_array
         self.balloon_array = balloon_array
         # self.prev_in_balloon_path = prev_in_balloon_path
-        self.troop_array = [self.king_array, self.barbarian_array, self.archer_array, balloon_array]
+        self.troop_array = [self.king_array, self.queen_array, self.barbarian_array, self.archer_array, balloon_array]
 
     def troop_damage(self, damage, village_matrix, vill_index, my_troop, hp_matrix, air_space):
         self.curr_hp -= damage
@@ -40,8 +41,8 @@ class troop:
         if (self.curr_hp <= 0):
             if (self.symbol == "O"):
                 air_space[self.pos[0]][self.pos[1]] = " "
-                vill_index[self.pos[0]][self.pos[1]] = " "
-                hp_matrix[self.pos[0]][self.pos[1]] = 0
+                # vill_index[self.pos[0]][self.pos[1]] = " "
+                # hp_matrix[self.pos[0]][self.pos[1]] = 0
                 # if self.symbol == "O":
                     # rem_index = 0
                     # for i in range(len(my_troop.balloon_array)):
@@ -124,9 +125,23 @@ class king(troop):
             print("#", end="")
         print("\n")
     
-    def attack(self, village_matrix, vill_index, my_village, my_buildings):
-        if (village_matrix[self.pos[0]-1][self.pos[1]] == "H" or village_matrix[self.pos[0]-1][self.pos[1]] == "V" or village_matrix[self.pos[0]-1][self.pos[1]] == "C" or village_matrix[self.pos[0]-1][self.pos[1]] == "W" or village_matrix[self.pos[0]-1][self.pos[1]] == "T" ):
-            code = vill_index[self.pos[0]-1][self.pos[1]]
+    def attack(self, village_matrix, vill_index, my_village, my_buildings, last_moved):
+        x_dir = -1
+        y_dir = 0
+        if (last_moved == "w"):
+            x_dir = -1
+            y_dir = 0
+        elif (last_moved == "a"):
+            x_dir = 0
+            y_dir = -1
+        elif (last_moved == "s"):
+            x_dir = 1
+            y_dir = 0
+        elif (last_moved == "d"):
+            x_dir = 0
+            y_dir = 1
+        if (village_matrix[self.pos[0]+x_dir][self.pos[1]+y_dir] == "H" or village_matrix[self.pos[0]+x_dir][self.pos[1]+y_dir] == "V" or village_matrix[self.pos[0]+x_dir][self.pos[1]+y_dir] == "C" or village_matrix[self.pos[0]+x_dir][self.pos[1]+y_dir] == "W" or village_matrix[self.pos[0]+x_dir][self.pos[1]+y_dir] == "T" ):
+            code = vill_index[self.pos[0]+x_dir][self.pos[1]+y_dir]
             # print(code)
             # with open("output.txt", "a") as f:
             #     f.write(code)
@@ -152,37 +167,171 @@ class king(troop):
     def lev_attack(self, village_matrix, vill_index, my_village, my_buildings):
         # code = []
         required_buildings = []
-        for i in range(self.pos[0]-5, self.pos[0]+5):
-            for j in range(self.pos[1]-5, self.pos[1]+5):
-                if (village_matrix[i][j] == "H" or village_matrix[i][j] == "V" or village_matrix[i][j] == "C" or village_matrix[i][j] == "W" or village_matrix[i][j] == "T" ):
-                    code = vill_index[i][j]
-                    # print(code)
-                    # with open("dum.txt", "a") as f:
-                    #     f.write(code)
-                    #     f.write("\n")
+        try:
 
-                    
+            for i in range(self.pos[0]-5, self.pos[0]+5):
+                for j in range(self.pos[1]-5, self.pos[1]+5):
+                    if (village_matrix[i][j] == "H" or village_matrix[i][j] == "V" or village_matrix[i][j] == "C" or village_matrix[i][j] == "W" or village_matrix[i][j] == "T" ):
+                        code = vill_index[i][j]
+                        # print(code)
+                        # with open("dum.txt", "a") as f:
+                        #     f.write(code)
+                        #     f.write("\n")
 
-                    for r in range(len(my_village.building_array)):
-                        for s in range(len(my_village.building_array[r])):
-                            # print(my_village.building_array[i][j])
-                            # with open("output.txt", "a") as f:
-                            #     f.write(str(my_village.building_array[i][j]))
-                            #     f.write("\n")
-                            if (my_village.building_array[r][s].code == code):
-                                required_building = my_village.building_array[r][s]
-                                required_buildings.append(required_building)
-                                break
-                else :
-                    continue            
-        required_buildings = set(required_buildings)
-        for i in required_buildings:
-            village_matrix, vill_index = i.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
-            # with open("output.txt", "a") as f:
-            #     f.write(required_building.code)
-            #     f.write("\n")
+                        
+
+                        for r in range(len(my_village.building_array)):
+                            for s in range(len(my_village.building_array[r])):
+                                # print(my_village.building_array[i][j])
+                                # with open("output.txt", "a") as f:
+                                #     f.write(str(my_village.building_array[i][j]))
+                                #     f.write("\n")
+                                if (my_village.building_array[r][s].code == code):
+                                    required_building = my_village.building_array[r][s]
+                                    required_buildings.append(required_building)
+                                    break
+                    else :
+                        continue            
+            required_buildings = set(required_buildings)
+            for i in required_buildings:
+                village_matrix, vill_index = i.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
+                # with open("output.txt", "a") as f:
+                #     f.write(required_building.code)
+                #     f.write("\n")
+        except:
+            pass
 
         return village_matrix, vill_index
+    
+    def damage(self, damage, village_matrix, vill_index, my_troop, hp_matrix):
+        village_matrix, vill_index = self.troop_damage(damage, village_matrix, vill_index, my_troop, hp_matrix)
+        return village_matrix, vill_index
+
+class queen(troop):
+    def __init__(self, village_matrix):
+        super().__init__(50, 9, "Q", village_matrix)
+        self.pos = (0, 0)
+
+    def spawn(self, village_matrix, spawn_pos, hp_matrix):
+        if (spawn_pos == "b"):
+            self.pos = (38, 25)
+            if (village_matrix[self.pos[0]][self.pos[1]] == " "):
+                village_matrix[self.pos[0]][self.pos[1]] = "Q"
+                hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+        elif (spawn_pos == "n"):
+            self.pos = (38, 75)
+            if (village_matrix[self.pos[0]][self.pos[1]] == " "):
+                village_matrix[self.pos[0]][self.pos[1]] = "Q"
+                hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+        else:
+            self.pos = (1, 50)
+            if (village_matrix[self.pos[0]][self.pos[1]] == " "):
+                village_matrix[self.pos[0]][self.pos[1]] = "Q"
+                hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+
+    def move(self, village_matrix, direction, hp_matrix):
+        if (direction == "w" and village_matrix[self.pos[0]-1][self.pos[1]] == " "):
+            village_matrix[self.pos[0]][self.pos[1]] = " "
+            self.pos = (self.pos[0]-1, self.pos[1])
+            village_matrix[self.pos[0]][self.pos[1]] = "Q"
+            hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+        elif (direction == "a" and village_matrix[self.pos[0]][self.pos[1]-1] == " "):
+            village_matrix[self.pos[0]][self.pos[1]] = " "
+            self.pos = (self.pos[0], self.pos[1]-1)
+            village_matrix[self.pos[0]][self.pos[1]] = "Q"
+            hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+        elif (direction == "s" and village_matrix[self.pos[0]+1][self.pos[1]] == " "):
+            village_matrix[self.pos[0]][self.pos[1]] = " "
+            self.pos = (self.pos[0]+1, self.pos[1])
+            village_matrix[self.pos[0]][self.pos[1]] = "Q"
+            hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+        elif (direction == "d" and village_matrix[self.pos[0]][self.pos[1]+1] == " "):
+            village_matrix[self.pos[0]][self.pos[1]] = " "
+            self.pos = (self.pos[0], self.pos[1]+1)
+            village_matrix[self.pos[0]][self.pos[1]] = "Q"
+            hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
+
+    def display_health(self):
+        print("\nQueen's Health: \n")
+        # print(game.hut_array)
+        for i in range(int(self.curr_hp)):
+            print("#", end="")
+        print("\n")
+    
+    def attack(self, village_matrix, vill_index, my_village, my_buildings, last_moved):
+        x_dir = -1
+        y_dir = 0
+        if (last_moved == "w"):
+            x_dir = -1
+            y_dir = 0
+        elif (last_moved == "a"):
+            x_dir = 0
+            y_dir = -1
+        elif (last_moved == "s"):
+            x_dir = 1
+            y_dir = 0
+        elif (last_moved == "d"):
+            x_dir = 0
+            y_dir = 1
+        
+        center = (self.pos[0]+ (8*x_dir) , self.pos[1]+ (8*y_dir))
+
+        try: 
+        
+            for g in range(center[0]-3 , center[0]+3 ):
+                for h in range (center[1]-3 , center[1]+3 ):        
+                    if (village_matrix[g][h] == "H" or village_matrix[g][h] == "V" or village_matrix[g][h] == "C" or village_matrix[g][h] == "W" or village_matrix[g][h] == "T" ):
+                        code = vill_index[g][h]
+                        
+                        required_building = 0
+
+                        for i in range(len(my_village.building_array)):
+                            for j in range(len(my_village.building_array[i])):
+                                if (my_village.building_array[i][j].code == code):
+                                    required_building = my_village.building_array[i][j]
+                                    break
+                        village_matrix, vill_index = required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
+        except:
+            pass
+        return village_matrix, vill_index
+
+    def eagle_attack(self, village_matrix, vill_index, my_village, my_buildings, last_moved):
+        x_dir = -1
+        y_dir = 0
+        if (last_moved == "w"):
+            x_dir = -1
+            y_dir = 0
+        elif (last_moved == "a"):
+            x_dir = 0
+            y_dir = -1
+        elif (last_moved == "s"):
+            x_dir = 1
+            y_dir = 0
+        elif (last_moved == "d"):
+            x_dir = 0
+            y_dir = 1
+        
+        center = (self.pos[0]+ (16*x_dir) , self.pos[1]+ (16*y_dir))
+
+        try: 
+        
+            for g in range(center[0]-5 , center[0]+5 ):
+                for h in range (center[1]-5 , center[1]+5 ):        
+                    if (village_matrix[g][h] == "H" or village_matrix[g][h] == "V" or village_matrix[g][h] == "C" or village_matrix[g][h] == "W" or village_matrix[g][h] == "T" ):
+                        code = vill_index[g][h]
+                        
+                        required_building = 0
+
+                        for i in range(len(my_village.building_array)):
+                            for j in range(len(my_village.building_array[i])):
+                                if (my_village.building_array[i][j].code == code):
+                                    required_building = my_village.building_array[i][j]
+                                    break
+                        village_matrix, vill_index = required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
+        except:
+            pass
+        return village_matrix, vill_index
+
     
     def damage(self, damage, village_matrix, vill_index, my_troop, hp_matrix):
         village_matrix, vill_index = self.troop_damage(damage, village_matrix, vill_index, my_troop, hp_matrix)
