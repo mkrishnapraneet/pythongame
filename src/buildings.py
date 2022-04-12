@@ -27,6 +27,7 @@ class buildings:
         self.cannon_array = []
 
         self.imp_building_array = [self.hut_array, self.town_hall_array, self.cannon_array]
+        self.defensive_building_array = [self.town_hall_array, self.cannon_array]
         # with open("output.txt", "a") as f:
         #         f.write(self.code)
         #         f.write("\n")
@@ -120,7 +121,7 @@ class cannon(buildings):
         enemy_pos = 0
         for i in range(self.coordinates[0]-5, self.coordinates[1]+5):
             for j in range(self.coordinates[2]-5, self.coordinates[3]+5):
-                if (village_matrix[i][j] == "B" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K"):
+                if (village_matrix[i][j] == "B"  or village_matrix[i][j] == "O" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K"):
                     enemy_pos = (i, j)
                     break
         if (enemy_pos != 0):
