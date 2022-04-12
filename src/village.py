@@ -37,12 +37,13 @@ class village:
                 # print(self.vill[i][j], end="")
             print()
     
-    def buildings(self, town_hall, hut_array, cannon_array, wall_array):
+    def buildings(self, town_hall, hut_array, cannon_array, wizard_tower_array, wall_array):
         self.town_hall = [town_hall]
         self.hut_array = hut_array
         self.cannon_array = cannon_array
+        self.wizard_tower_array = wizard_tower_array
         self.wall_array = wall_array
 
-        self.building_array = [self.town_hall,self.hut_array,self.cannon_array,self.wall_array]
+        self.building_array = [self.town_hall,self.hut_array,self.cannon_array ,self.wizard_tower_array ,self.wall_array]
     
     

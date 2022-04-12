@@ -4,7 +4,7 @@ import os
 def check_game_over(village_matrix):
     for i in range(len(village_matrix)):
         for j in range(len(village_matrix[i])):
-            if (village_matrix[i][j] == "T" or village_matrix[i][j] == "C" or village_matrix[i][j] == "H"):
+            if (village_matrix[i][j] == "T" or village_matrix[i][j] == "V" or village_matrix[i][j] == "C" or village_matrix[i][j] == "H"):
                 return
     # return True
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -25,9 +25,10 @@ class buildings:
         self.hut_array = []
         self.town_hall_array = []
         self.cannon_array = []
+        self.wizard_tower_array = []
 
-        self.imp_building_array = [self.hut_array, self.town_hall_array, self.cannon_array]
-        self.defensive_building_array = [self.town_hall_array, self.cannon_array]
+        self.imp_building_array = [self.hut_array, self.town_hall_array, self.cannon_array, self.wizard_tower_array]
+        self.defensive_building_array = [self.cannon_array, self.wizard_tower_array]
         # with open("output.txt", "a") as f:
         #         f.write(self.code)
         #         f.write("\n")
@@ -117,7 +118,7 @@ class cannon(buildings):
             my_buildings.cannon_array.remove(self)
         return village_matrix, vill_index
     
-    def attack(self, village_matrix, vill_index, my_troop, hp_matrix):
+    def attack(self, village_matrix, vill_index, my_troop, hp_matrix, air_space):
         enemy_pos = 0
         for i in range(self.coordinates[0]-5, self.coordinates[1]+5):
             for j in range(self.coordinates[2]-5, self.coordinates[3]+5):
@@ -128,7 +129,39 @@ class cannon(buildings):
             for i in range(len(my_troop.troop_array)):
                 for j in range(len(my_troop.troop_array[i])):
                     if (my_troop.troop_array[i][j].pos == enemy_pos):
-                        (my_troop.troop_array[i][j]).troop_damage(self.deal_damage, village_matrix, vill_index, my_troop, hp_matrix)
+                        (my_troop.troop_array[i][j]).troop_damage(self.deal_damage, village_matrix, vill_index, my_troop, hp_matrix, air_space)
+                        break
+        return village_matrix, vill_index
+
+class wizard_tower(buildings):
+    def __init__(self, coordinates, code):
+        super().__init__(150, "V", coordinates, code)
+        self.deal_damage = 5
+
+    def add_wizard_tower(self, village_matrix, vill_index, hp_matrix , my_buildings):
+        village_matrix, vill_index = self.add_buildings(
+            village_matrix, vill_index, hp_matrix)
+        my_buildings.wizard_tower_array.append(self)
+        return village_matrix, vill_index
+
+    def damage(self, damage, village_matrix, vill_index, hp_matrix, my_buildings):
+        village_matrix, vill_index, is_gone = self.building_damage(damage, village_matrix, vill_index, hp_matrix)
+        if is_gone == 1:
+            my_buildings.wizard_tower_array.remove(self)
+        return village_matrix, vill_index
+    
+    def attack(self, village_matrix, vill_index, my_troop, hp_matrix, air_space):
+        enemy_pos = 0
+        for i in range(self.coordinates[0]-5, self.coordinates[1]+5):
+            for j in range(self.coordinates[2]-5, self.coordinates[3]+5):
+                if (village_matrix[i][j] == "B" or air_space[i][j] == "O" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K"):
+                    enemy_pos = (i, j)
+                    break
+        if (enemy_pos != 0):
+            for i in range(len(my_troop.troop_array)):
+                for j in range(len(my_troop.troop_array[i])):
+                    if (my_troop.troop_array[i][j].pos == enemy_pos):
+                        (my_troop.troop_array[i][j]).troop_damage(self.deal_damage, village_matrix, vill_index, my_troop, hp_matrix, air_space)
                         break
         return village_matrix, vill_index
 

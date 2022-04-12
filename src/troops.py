@@ -5,10 +5,10 @@ from buildings import check_game_over
 # sys.path.insert(0, '../')
 from village import *
 
-def check_game_over(village_matrix):
+def check_game_over(village_matrix, air_space):
     for i in range(len(village_matrix)):
         for j in range(len(village_matrix[i])):
-            if (village_matrix[i][j] == "B" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K" or village_matrix[i][j] == "O" ):
+            if (village_matrix[i][j] == "B" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K" or air_space[i][j] == "O" ):
                 return
     # return False
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -34,26 +34,32 @@ class troop:
         # self.prev_in_balloon_path = prev_in_balloon_path
         self.troop_array = [self.king_array, self.barbarian_array, self.archer_array, balloon_array]
 
-    def troop_damage(self, damage, village_matrix, vill_index, my_troop, hp_matrix):
+    def troop_damage(self, damage, village_matrix, vill_index, my_troop, hp_matrix, air_space):
         self.curr_hp -= damage
         hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
         if (self.curr_hp <= 0):
-            village_matrix[self.pos[0]][self.pos[1]] = " "
-            vill_index[self.pos[0]][self.pos[1]] = " "
-            hp_matrix[self.pos[0]][self.pos[1]] = 0
-            if self.symbol == "B":
-                my_troop.barbarian_array.remove(self)
-            if self.symbol == "A":
-                my_troop.archer_array.remove(self)
-            if self.symbol == "O":
-                # rem_index = 0
-                # for i in range(len(my_troop.balloon_array)):
-                #     if my_troop.balloon_array[i] == self:
-                #         rem_index = i
-                #         break
+            if (self.symbol == "O"):
+                air_space[self.pos[0]][self.pos[1]] = " "
+                vill_index[self.pos[0]][self.pos[1]] = " "
+                hp_matrix[self.pos[0]][self.pos[1]] = 0
+                # if self.symbol == "O":
+                    # rem_index = 0
+                    # for i in range(len(my_troop.balloon_array)):
+                    #     if my_troop.balloon_array[i] == self:
+                    #         rem_index = i
+                    #         break
                 my_troop.balloon_array.remove(self)
-                # del my_troop.prev_in_balloon_path[rem_index]
-            check_game_over(village_matrix)
+                    # del my_troop.prev_in_balloon_path[rem_index]
+                check_game_over(village_matrix, air_space)
+            else :
+                village_matrix[self.pos[0]][self.pos[1]] = " "
+                vill_index[self.pos[0]][self.pos[1]] = " "
+                hp_matrix[self.pos[0]][self.pos[1]] = 0
+                if self.symbol == "B":
+                    my_troop.barbarian_array.remove(self)
+                if self.symbol == "A":
+                    my_troop.archer_array.remove(self)
+                check_game_over(village_matrix, air_space)
         return village_matrix, vill_index
     
     def heal_spell(self,village_matrix, vill_index, my_troop, hp_matrix):
@@ -119,7 +125,7 @@ class king(troop):
         print("\n")
     
     def attack(self, village_matrix, vill_index, my_village, my_buildings):
-        if (village_matrix[self.pos[0]-1][self.pos[1]] == "H" or village_matrix[self.pos[0]-1][self.pos[1]] == "C" or village_matrix[self.pos[0]-1][self.pos[1]] == "W" or village_matrix[self.pos[0]-1][self.pos[1]] == "T" ):
+        if (village_matrix[self.pos[0]-1][self.pos[1]] == "H" or village_matrix[self.pos[0]-1][self.pos[1]] == "V" or village_matrix[self.pos[0]-1][self.pos[1]] == "C" or village_matrix[self.pos[0]-1][self.pos[1]] == "W" or village_matrix[self.pos[0]-1][self.pos[1]] == "T" ):
             code = vill_index[self.pos[0]-1][self.pos[1]]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -148,7 +154,7 @@ class king(troop):
         required_buildings = []
         for i in range(self.pos[0]-5, self.pos[0]+5):
             for j in range(self.pos[1]-5, self.pos[1]+5):
-                if (village_matrix[i][j] == "H" or village_matrix[i][j] == "C" or village_matrix[i][j] == "W" or village_matrix[i][j] == "T" ):
+                if (village_matrix[i][j] == "H" or village_matrix[i][j] == "V" or village_matrix[i][j] == "C" or village_matrix[i][j] == "W" or village_matrix[i][j] == "T" ):
                     code = vill_index[i][j]
                     # print(code)
                     # with open("dum.txt", "a") as f:
@@ -204,7 +210,7 @@ class barbarian(troop):
                 hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
 
     def attack(self, village_matrix, vill_index, my_village, my_buildings):
-        if (village_matrix[self.pos[0]-1][self.pos[1]] == "H" or village_matrix[self.pos[0]-1][self.pos[1]] == "C" or village_matrix[self.pos[0]-1][self.pos[1]] == "W" or village_matrix[self.pos[0]-1][self.pos[1]] == "T" ):
+        if (village_matrix[self.pos[0]-1][self.pos[1]] == "H" or village_matrix[self.pos[0]-1][self.pos[1]] == "V" or village_matrix[self.pos[0]-1][self.pos[1]] == "C" or village_matrix[self.pos[0]-1][self.pos[1]] == "W" or village_matrix[self.pos[0]-1][self.pos[1]] == "T" ):
             code = vill_index[self.pos[0]-1][self.pos[1]]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -223,7 +229,7 @@ class barbarian(troop):
                         required_building = my_village.building_array[i][j]
                         break
             required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
-        elif (village_matrix[self.pos[0]+1][self.pos[1]] == "H" or village_matrix[self.pos[0]+1][self.pos[1]] == "C" or village_matrix[self.pos[0]+1][self.pos[1]] == "W" or village_matrix[self.pos[0]+1][self.pos[1]] == "T" ):
+        elif (village_matrix[self.pos[0]+1][self.pos[1]] == "H" or village_matrix[self.pos[0]+1][self.pos[1]] == "V" or village_matrix[self.pos[0]+1][self.pos[1]] == "C" or village_matrix[self.pos[0]+1][self.pos[1]] == "W" or village_matrix[self.pos[0]+1][self.pos[1]] == "T" ):
             code = vill_index[self.pos[0]+1][self.pos[1]]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -242,7 +248,7 @@ class barbarian(troop):
                         required_building = my_village.building_array[i][j]
                         break
             required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
-        elif (village_matrix[self.pos[0]][self.pos[1]-1] == "H" or village_matrix[self.pos[0]][self.pos[1]-1] == "C" or village_matrix[self.pos[0]][self.pos[1]-1] == "W" or village_matrix[self.pos[0]][self.pos[1]-1] == "T" ):
+        elif (village_matrix[self.pos[0]][self.pos[1]-1] == "H" or village_matrix[self.pos[0]][self.pos[1]-1] == "V" or village_matrix[self.pos[0]][self.pos[1]-1] == "C" or village_matrix[self.pos[0]][self.pos[1]-1] == "W" or village_matrix[self.pos[0]][self.pos[1]-1] == "T" ):
             code = vill_index[self.pos[0]][self.pos[1]-1]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -261,7 +267,7 @@ class barbarian(troop):
                         required_building = my_village.building_array[i][j]
                         break
             required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
-        elif (village_matrix[self.pos[0]][self.pos[1]+1] == "H" or village_matrix[self.pos[0]][self.pos[1]+1] == "C" or village_matrix[self.pos[0]][self.pos[1]+1] == "W" or village_matrix[self.pos[0]][self.pos[1]+1] == "T" ):
+        elif (village_matrix[self.pos[0]][self.pos[1]+1] == "H" or village_matrix[self.pos[0]][self.pos[1]+1] == "V" or village_matrix[self.pos[0]][self.pos[1]+1] == "C" or village_matrix[self.pos[0]][self.pos[1]+1] == "W" or village_matrix[self.pos[0]][self.pos[1]+1] == "T" ):
             code = vill_index[self.pos[0]][self.pos[1]+1]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -433,7 +439,7 @@ class archer(troop):
             for i in range(self.pos[0]-6, self.pos[0]+6):
                 for j in range(self.pos[1]-6, self.pos[1]+6):
                     try: 
-                        if (village_matrix[i][j] == "T" or village_matrix[i][j] == "C" or village_matrix[i][j] == "H"):
+                        if (village_matrix[i][j] == "T" or village_matrix[i][j] == "V" or village_matrix[i][j] == "C" or village_matrix[i][j] == "H"):
                             enemy_pos = (i, j)
                             break
                     except:
@@ -538,7 +544,7 @@ class balloon(troop):
                 hp_matrix[self.pos[0]][self.pos[1]] = float(self.curr_hp) / float(self.max_hp)
 
     def attack(self, village_matrix, vill_index, my_village, my_buildings):
-        if (village_matrix[self.pos[0]-1][self.pos[1]] == "H" or village_matrix[self.pos[0]-1][self.pos[1]] == "C" or village_matrix[self.pos[0]-1][self.pos[1]] == "W" or village_matrix[self.pos[0]-1][self.pos[1]] == "T" ):
+        if (village_matrix[self.pos[0]-1][self.pos[1]] == "H" or village_matrix[self.pos[0]-1][self.pos[1]] == "V" or village_matrix[self.pos[0]-1][self.pos[1]] == "C" or village_matrix[self.pos[0]-1][self.pos[1]] == "W" or village_matrix[self.pos[0]-1][self.pos[1]] == "T" ):
             code = vill_index[self.pos[0]-1][self.pos[1]]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -557,7 +563,7 @@ class balloon(troop):
                         required_building = my_village.building_array[i][j]
                         break
             required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
-        elif (village_matrix[self.pos[0]+1][self.pos[1]] == "H" or village_matrix[self.pos[0]+1][self.pos[1]] == "C" or village_matrix[self.pos[0]+1][self.pos[1]] == "W" or village_matrix[self.pos[0]+1][self.pos[1]] == "T" ):
+        elif (village_matrix[self.pos[0]+1][self.pos[1]] == "H" or village_matrix[self.pos[0]+1][self.pos[1]] == "V" or village_matrix[self.pos[0]+1][self.pos[1]] == "C" or village_matrix[self.pos[0]+1][self.pos[1]] == "W" or village_matrix[self.pos[0]+1][self.pos[1]] == "T" ):
             code = vill_index[self.pos[0]+1][self.pos[1]]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -576,7 +582,7 @@ class balloon(troop):
                         required_building = my_village.building_array[i][j]
                         break
             required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
-        elif (village_matrix[self.pos[0]][self.pos[1]-1] == "H" or village_matrix[self.pos[0]][self.pos[1]-1] == "C" or village_matrix[self.pos[0]][self.pos[1]-1] == "W" or village_matrix[self.pos[0]][self.pos[1]-1] == "T" ):
+        elif (village_matrix[self.pos[0]][self.pos[1]-1] == "H" or village_matrix[self.pos[0]][self.pos[1]-1] == "V" or village_matrix[self.pos[0]][self.pos[1]-1] == "C" or village_matrix[self.pos[0]][self.pos[1]-1] == "W" or village_matrix[self.pos[0]][self.pos[1]-1] == "T" ):
             code = vill_index[self.pos[0]][self.pos[1]-1]
             # print(code)
             # with open("output.txt", "a") as f:
@@ -595,7 +601,7 @@ class balloon(troop):
                         required_building = my_village.building_array[i][j]
                         break
             required_building.damage(self.damage, village_matrix, vill_index, my_village.hp_matrix, my_buildings)
-        elif (village_matrix[self.pos[0]][self.pos[1]+1] == "H" or village_matrix[self.pos[0]][self.pos[1]+1] == "C" or village_matrix[self.pos[0]][self.pos[1]+1] == "W" or village_matrix[self.pos[0]][self.pos[1]+1] == "T" ):
+        elif (village_matrix[self.pos[0]][self.pos[1]+1] == "H" or village_matrix[self.pos[0]][self.pos[1]+1] == "V" or village_matrix[self.pos[0]][self.pos[1]+1] == "C" or village_matrix[self.pos[0]][self.pos[1]+1] == "W" or village_matrix[self.pos[0]][self.pos[1]+1] == "T" ):
             code = vill_index[self.pos[0]][self.pos[1]+1]
             # print(code)
             # with open("output.txt", "a") as f:
