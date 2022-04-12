@@ -75,6 +75,14 @@ my_village.vill,my_village.vill_index = wall12.add_wall(my_village.vill,my_villa
 my_village.vill,my_village.vill_index = wall13.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
 my_village.vill,my_village.vill_index = wall14.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
 
+new_mat = np.empty((my_village.m, my_village.n), dtype=str)
+for i in range(len(my_village.vill)):
+    for j in range(len(my_village.vill[i])):
+        new_mat[i][j] = " "
+
+my_village.air_space = new_mat
+        
+
 hut_array = [hut1, hut2, hut3, hut4, hut5]
 cannon_array = [cannon1, cannon2]
 wall_array = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11, wall12, wall13, wall14]
@@ -87,6 +95,8 @@ prev_in_balloon_path = []
 my_village.buildings(twnhall, hut_array, cannon_array, wall_array)
 
 my_king = king(my_village.vill)
+
+prev_one =  np.empty((my_village.m, my_village.n), dtype=str)
 
 barbarian_array = []
 archer_array = []
@@ -115,28 +125,28 @@ while (1):
         my_barbarian.spawn(my_village.vill, inp, my_village.hp_matrix)
         barbarian_array.append(my_barbarian)
         # my_troop.barbarian_array.append(my_barbarian)
-        my_troop.array_troop(my_king, barbarian_array, archer_array, balloon_array, prev_in_balloon_path)
+        my_troop.array_troop(my_king, barbarian_array, archer_array, balloon_array)
     
     elif (inp == "7" or inp == "8" or inp == "9"):
         my_archer = archer(my_village.vill)
         my_archer.spawn(my_village.vill, inp, my_village.hp_matrix)
         archer_array.append(my_archer)
         # my_troop.barbarian_array.append(my_barbarian)
-        my_troop.array_troop(my_king, archer_array, archer_array, balloon_array, prev_in_balloon_path)
+        my_troop.array_troop(my_king, archer_array, archer_array, balloon_array)
     
     elif (inp == "0" or inp == "-" or inp == "="):
         my_balloon = balloon(my_village.vill)
-        my_balloon.spawn(my_village.vill, inp, my_village.hp_matrix)
+        my_balloon.spawn(my_village.vill, inp, my_village.hp_matrix, my_village.air_space)
         balloon_array.append(my_balloon)
         prev_in_balloon_path.append(" ")
         # my_troop.barbarian_array.append(my_barbarian)
-        my_troop.array_troop(my_king, archer_array, archer_array, balloon_array, prev_in_balloon_path)
+        my_troop.array_troop(my_king, archer_array, archer_array, balloon_array)
 
     elif (inp == "1" or inp == "2" or inp == "3"):
         if (king_deployed == 0):
             my_king.spawn(my_village.vill, inp, my_village.hp_matrix)
             king_deployed = 1
-            my_troop.array_troop(my_king, barbarian_array, archer_array, balloon_array, prev_in_balloon_path)
+            my_troop.array_troop(my_king, barbarian_array, archer_array, balloon_array)
     elif (inp == "h"):
         for i in range(len(my_troop.troop_array)):
             for j in range(len(my_troop.troop_array[i])):
@@ -171,12 +181,12 @@ while (1):
             archer_array[i].attack(my_village.vill,my_village.vill_index, my_village, my_buildings)
     
     for i in range(len(balloon_array)):
-        prev_in_balloon_path[i] = balloon_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings, prev_in_balloon_path[i])
-        prev_in_balloon_path[i] = balloon_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings, prev_in_balloon_path[i])
+        balloon_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings, my_village.air_space)
+        balloon_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings, my_village.air_space)
         balloon_array[i].attack(my_village.vill,my_village.vill_index, my_village, my_buildings)
         if rage_spell == 1:
-            prev_in_balloon_path[i] = balloon_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings, prev_in_balloon_path[i])
-            prev_in_balloon_path[i] = balloon_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings, prev_in_balloon_path[i])
+            balloon_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings, my_village.air_space)
+            balloon_array[i].move(my_village.vill,my_village.vill_index, my_village, my_buildings, my_village.air_space)
             balloon_array[i].attack(my_village.vill,my_village.vill_index, my_village, my_buildings)
     
     if a == 1:
@@ -185,9 +195,21 @@ while (1):
         if my_village.vill[10][77] == "C":
             cannon2.attack(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix)
 
+    for i in range(len(my_village.vill)):
+        for j in range(len(my_village.vill[i])):
+            if my_village.air_space[i][j] == "O":
+                prev_one[i][j] = my_village.vill[i][j]
+                my_village.vill[i][j] = "O"
+
     my_village.display()
+
     my_king.display_health()
     
+    for i in range(len(my_village.vill)):
+        for j in range(len(my_village.vill[i])):
+            if my_village.vill[i][j] == "O":
+                my_village.vill[i][j] = prev_one[i][j]
+
     if a == 0:
         a = 1
     elif a == 1:

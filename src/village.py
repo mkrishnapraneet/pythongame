@@ -8,6 +8,7 @@ class village:
         self.hp_matrix = np.zeros((self.m,self.n), dtype=float)
         self.vill_index = np.empty((self.m,self.n), dtype=object)
         self.vill = np.empty((self.m,self.n), dtype=str)
+        self.air_space = np.empty((self.m,self.n), dtype=str)
         
         for i in range(self.n):
             self.vill[0][i] = "*"
