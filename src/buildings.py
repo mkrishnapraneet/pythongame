@@ -9,13 +9,24 @@ def check_game_over(village_matrix):
         for j in range(len(village_matrix[i])):
             if (village_matrix[i][j] == "T" or village_matrix[i][j] == "V" or village_matrix[i][j] == "C" or village_matrix[i][j] == "H"):
                 return
-    # return True
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print("\nVictory!\n")
-    with open("output.txt", "a") as f:
-            f.write("END")
-            f.write("\n")
-    sys.exit()
+    
+    if (int(sys.argv[1]) == 2):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("\nVictory!\n")
+        with open("output.txt", "a") as f:
+                f.write("END")
+                f.write("\n")
+        sys.exit()
+    arg = int(sys.argv[1])+1
+    os.execv(sys.executable, ['python3'] + ['game.py' ,str(arg)])
+    # os.execv(sys.argv[0], sys.argv)
+
+    # os.system('cls' if os.name == 'nt' else 'clear')
+    # print("\nVictory!\n")
+    # with open("output.txt", "a") as f:
+    #         f.write("END")
+    #         f.write("\n")
+    # sys.exit()
 
 class buildings:
     def __init__(self, max_hp, symbol, coordinates, code):

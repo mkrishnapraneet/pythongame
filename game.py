@@ -23,13 +23,17 @@ hut2 = hut((32,34,10,12),"h2")
 hut3 = hut((5,7,85,87),"h3")
 hut4 = hut((32,34,85,87),"h4")
 hut5 = hut((32,34,49,51),"h5")
-# hut6 = hut((5,7,49,51),"h6")
+hut6 = hut((5,7,49,51),"h6")
 
 cannon1 = cannon((9,12,21,23),"c1")
 cannon2 = cannon((9,12,76,78),"c2")
+cannon3 = cannon((9,12,49,51), "c3")
+cannon4 = cannon((17,20,21,23), "c4")
 
 wizard_tower1 = wizard_tower((25,28,21,23),"v1")
 wizard_tower2 = wizard_tower((25,28,76,78),"v2")
+wizard_tower3 = wizard_tower((25,28,49,51),"v3")
+wizard_tower4 = wizard_tower((17,20,76,78),"v4")
 
 wall1 = wall((21,22,40,41),"w1")
 wall2 = wall((22,23,41,42),"w2")
@@ -56,13 +60,24 @@ my_village.vill,my_village.vill_index = hut2.add_hut(my_village.vill,my_village.
 my_village.vill,my_village.vill_index = hut3.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
 my_village.vill,my_village.vill_index = hut4.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
 my_village.vill,my_village.vill_index = hut5.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
-# my_village.vill,my_village.vill_index = hut6.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+if (int(sys.argv[1]) == 1 or int(sys.argv[1]) == 2):
+    my_village.vill,my_village.vill_index = hut6.add_hut(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
 
 my_village.vill,my_village.vill_index = cannon1.add_cannon(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
 my_village.vill,my_village.vill_index = cannon2.add_cannon(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+if (int(sys.argv[1]) == 1 or int(sys.argv[1]) == 2):
+    my_village.vill,my_village.vill_index = cannon3.add_cannon(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+if (int(sys.argv[1]) == 2):
+    my_village.vill,my_village.vill_index = cannon4.add_cannon(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+    
 
 my_village.vill,my_village.vill_index = wizard_tower1.add_wizard_tower(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
 my_village.vill,my_village.vill_index = wizard_tower2.add_wizard_tower(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+if (int(sys.argv[1]) == 1 or int(sys.argv[1]) == 2):
+    my_village.vill,my_village.vill_index = wizard_tower3.add_wizard_tower(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+if (int(sys.argv[1]) == 2):
+    my_village.vill,my_village.vill_index = wizard_tower4.add_wizard_tower(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_buildings)
+
 
 my_village.vill,my_village.vill_index = wall1.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
 my_village.vill,my_village.vill_index = wall2.add_wall(my_village.vill,my_village.vill_index, my_village.hp_matrix, my_village)
@@ -88,11 +103,22 @@ for i in range(len(my_village.vill)):
 
 my_village.air_space = new_mat
         
+if (int(sys.argv[1]) == 0):
+    hut_array = [hut1, hut2, hut3, hut4, hut5]
+    cannon_array = [cannon1, cannon2]
+    wizard_tower_array = [wizard_tower1, wizard_tower2]
+    wall_array = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11, wall12, wall13, wall14]
+elif (int(sys.argv[1]) == 1):
+    hut_array = [hut1, hut2, hut3, hut4, hut5, hut6]
+    cannon_array = [cannon1, cannon2, cannon3]
+    wizard_tower_array = [wizard_tower1, wizard_tower2, wizard_tower3]
+    wall_array = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11, wall12, wall13, wall14]
+elif (int(sys.argv[1]) == 2):
+    hut_array = [hut1, hut2, hut3, hut4, hut5, hut6]
+    cannon_array = [cannon1, cannon2, cannon3, cannon4]
+    wizard_tower_array = [wizard_tower1, wizard_tower2, wizard_tower3, wizard_tower4]
+    wall_array = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11, wall12, wall13, wall14]
 
-hut_array = [hut1, hut2, hut3, hut4, hut5]
-cannon_array = [cannon1, cannon2]
-wizard_tower_array = [wizard_tower1, wizard_tower2]
-wall_array = [wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11, wall12, wall13, wall14]
 
 prev_in_balloon_path = []
 # my_village.hut_array = hut_array
@@ -250,10 +276,18 @@ while (1):
             cannon1.attack(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix, my_village.air_space)
         if my_village.vill[10][77] == "C":
             cannon2.attack(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix, my_village.air_space)
+        if (my_village.vill[10][50] == "C" and  (int(sys.argv[1]) == 1 or int(sys.argv[1]) == 2))  :
+            cannon3.attack(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix, my_village.air_space)
+        if (my_village.vill[18][22] == "C" and  (int(sys.argv[1]) == 2))  :
+            cannon4.attack(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix, my_village.air_space)
         if my_village.vill[26][22] == "V":
             wizard_tower1.attack(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix, my_village.air_space)
         if my_village.vill[26][77] == "V":
             wizard_tower2.attack(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix, my_village.air_space)
+        if (my_village.vill[26][50] == "V" and (int(sys.argv[1]) == 1 or int(sys.argv[1]) == 2))  :
+            wizard_tower3.attack(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix, my_village.air_space)
+        if (my_village.vill[18][77] == "V" and (int(sys.argv[1]) == 2))  :
+            wizard_tower4.attack(my_village.vill, my_village.vill_index, my_troop, my_village.hp_matrix, my_village.air_space)
 
     # my_village.buildings(twnhall, hut_array, cannon_array, wizard_tower_array, wall_array)
     if timer == 8:
@@ -265,7 +299,8 @@ while (1):
         my_village.vill, my_village.vill_index = my_queen.eagle_attack(my_village.vill, my_village.vill_index, my_village, my_buildings, last_moved)
         should_eagle = 0
         setofftimer = -1
-    
+    print("Level : " + str(int(sys.argv[1])+1) + "\n")
+
     for i in range(len(my_village.vill)):
         for j in range(len(my_village.vill[i])):
             if my_village.air_space[i][j] == "O":
