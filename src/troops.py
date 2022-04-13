@@ -8,7 +8,7 @@ from village import *
 def check_game_over(village_matrix, air_space):
     for i in range(len(village_matrix)):
         for j in range(len(village_matrix[i])):
-            if (village_matrix[i][j] == "B" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K" or air_space[i][j] == "O" ):
+            if (village_matrix[i][j] == "B" or village_matrix[i][j] == "A" or village_matrix[i][j] == "K" or village_matrix[i][j] == "Q" or air_space[i][j] == "O" ):
                 return
     # return False
     os.system('cls' if os.name == 'nt' else 'clear')

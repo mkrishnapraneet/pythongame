@@ -18,6 +18,14 @@ def check_game_over(village_matrix):
                 f.write("\n")
         sys.exit()
     arg = int(sys.argv[1])+1
+    if (int(sys.argv[1]) == 0):
+        with open("output.txt", "a") as f:
+                    f.write("z")
+                    f.write("\n")
+    elif (int(sys.argv[1]) == 1):
+        with open("output.txt", "a") as f:
+                    f.write("x")
+                    f.write("\n")
     os.execv(sys.executable, ['python3'] + ['game.py' ,str(arg)])
     # os.execv(sys.argv[0], sys.argv)
 
